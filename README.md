@@ -7,7 +7,7 @@ Para este proyecto es encesario tener instalado node js, este se puede encontrar
 ## Installation
 
 ```bash
-npm i express, axios, react-hook-form, react-router-dom, -D tailwindcss postcss autoprefixer, cookie-parser, zod, bcryptjs, mongodb, mongoose, morgan, nodemon -D, cors
+npm i express, axios, react-hook-form, react-router-dom, -D tailwindcss, postcss, autoprefixer, cookie-parser, zod, bcryptjs, mongodb, mongoose, morgan, nodemon -D, cors, vite
 
 ```
 

@@ -9,6 +9,10 @@ export const register = async (req, res) => {
     const {username, email, password, rolUSM, tipoUsuario} = req.body
 
     try {
+        const userFound= await User.findOne({ email });
+        if (userFound) {
+            return res.status(400).json(["Este Usuario ya esta registrado"]);
+        } 
         const passwordhash = await bcrypt.hash(password, 10)
 
         const newUser = new User({

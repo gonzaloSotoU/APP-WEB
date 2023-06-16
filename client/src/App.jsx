@@ -1,19 +1,30 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import RegisterPage from './pages/RegisterPage';
-import LoginPage from './pages/LoginPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 
-function App(){
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import CalendarPage from "./pages/CalendarPage";
+import CalendarFormPage from "./pages/CalendarFormPage";
+import ProfilePage from "./pages/ProfilePage";
+
+function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-        <Route path='/' element={<h1>Home Page</h1>} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/profile' element={<h1>Profile</h1>} />
-        
-      </Routes>
-    </BrowserRouter>
-  )
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/add-task" element={<CalendarFormPage />} />
+          <Route path="/calendar/:id" element={<CalendarFormPage />} />
+
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
-export default App
+export default App;

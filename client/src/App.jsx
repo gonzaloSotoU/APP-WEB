@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import CalendarPage from "./pages/CalendarPage";
 import CalendarFormPage from "./pages/CalendarFormPage";
 import ProfilePage from "./pages/ProfilePage";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
@@ -17,11 +18,12 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/add-task" element={<CalendarFormPage />} />
-          <Route path="/calendar/:id" element={<CalendarFormPage />} />
-
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/add-task" element={<CalendarFormPage />} />
+            <Route path="/calendar/:id" element={<CalendarFormPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

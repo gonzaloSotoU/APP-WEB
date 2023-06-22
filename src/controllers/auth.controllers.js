@@ -3,7 +3,8 @@ import User from '../models/user.models.js'
 import Reserva from '../models/reserva.models.js'
 import bcrypt from 'bcryptjs'
 import { creatAccessToken } from "../libs/jwt.js";
-
+import jwt from 'jsonwebtoken'
+import { TOKEN_SECRET} from '../config.js'
 
 export const register = async (req, res) => {
     const {username, email, password, rolUSM, tipoUsuario} = req.body
@@ -26,7 +27,10 @@ export const register = async (req, res) => {
         const userSaved = await newUser.save();
         const token = await creatAccessToken({id: userSaved._id});
 
-        res.cookie('token',token);
+        res.cookie('token',token,{
+            sameSite: none,
+            secure: true
+        });
         res.json({
             id: userSaved._id,
             username: userSaved.username,
@@ -53,7 +57,10 @@ export const login = async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: "Incorrecet password"});
         
         const token = await creatAccessToken({id: userFound._id});
-        res.cookie('token',token);
+        res.cookie('token',token,{
+            sameSite: 'none',
+            secure: true,
+        });
         res.json({
             id: userFound._id,
             username: userFound.username,
@@ -90,6 +97,23 @@ export const profile = async (req, res) => {
         updateAt: userFound.updateAt,
         tipoUsuario: userFound.tipoUsuario,
 
+    })
+}
+export const verifyToken = async (req, res)=>{
+    const {token} = req.cookies
+
+    if(!token) return res.status(401).json({ message: "no autorizado"});
+    jwt.verify(token, TOKEN_SECRET, async (err, user)=>{
+        if(err) return res.status(401).json({message: "No autorizado"})
+        const userFound=await User.findById(user.id)
+        if(!userFound) return res.status(401).json({message: " No autorizado"})
+
+        return res.json({
+            id: userFound._id,
+            username: userFound.username,
+            email: userFound.email,
+            tipoUsuario: userFound.tipoUsuario
+        })
     })
 }
 export const reserva = (req, res) => res.send("Reserva") 
